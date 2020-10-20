@@ -14,6 +14,7 @@ namespace Kodimax
         public List<Ticket> tickes = new List<Ticket>();
         public List<User> users = new List<User>();
         public List<Candy> candies = new List<Candy>();
+        public List<BranchOffice> branchs = new List<BranchOffice>();
 
         public Cinema(string name)
         {

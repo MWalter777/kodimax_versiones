@@ -189,6 +189,9 @@ namespace Kodimax
             items.Add("ELIMINAR GOLOSINA");
             items.Add("MODIFICAR GOLOSINA");
             items.Add("GREGAR GOLOSINA");
+            items.Add("AGREGAR SUCURSALES");
+            items.Add("MODIFICAR SUCURSALES");
+            items.Add("MODIFICAR PRECIOS AUTOCINE");
             items.Add("CERRAR SESION");
             Menu menu = new Menu(items, 15, 7);
             int option;
@@ -216,9 +219,59 @@ namespace Kodimax
                     case 5:
                         addCandy();
                         break;
+                    case 6:
+                        addBranchOffice();
+                        break;
+                    case 7:
+                        editBranchOffice();
+                        break;
+                    case 8:
+                        addCandy();
+                        break;
                 }
-            } while (option < 6);
+            } while (option < 9);
 
+        }
+
+        private static void addBranchOffice()
+        {
+            BranchOfficeControl branchOffice = new BranchOfficeControl();
+            if (branchOffice.editBranch())
+            {
+                Console.Clear();
+                Console.WriteLine("SUCURSAL AGREGADA CON EXITO");
+                Console.ReadKey();
+            }
+        }
+
+        private static void editBranchOffice()
+        {
+            int index = showBranch("SELECCIONE LA SUCURSAL");
+            if (index >= 0 && index < Program.cinema.branchs.Count)
+            {
+                BranchOfficeControl branchOffice = new BranchOfficeControl(index);
+                if (branchOffice.editBranch())
+                {
+                    Console.Clear();
+                    Console.WriteLine("SUCURSAL EDITADA CON EXITO");
+                    Console.ReadKey();
+                }
+            }
+        }
+
+        private static int showBranch(string v)
+        {
+            Console.Clear();
+            ArrayList items = new ArrayList();
+            foreach (BranchOffice br in Program.cinema.branchs)
+            {
+                items.Add(String.Format("{0}\t{1}\t${2}", br.name, br.price, br.capacity));
+            }
+            items.Add("REGRESAR");
+            Menu menu = new Menu(items, 15, 7, "Seleccione una opcion");
+            menu.printItems();
+            int option = menu.getOption();
+            return option;
         }
 
         private static void addMovie()

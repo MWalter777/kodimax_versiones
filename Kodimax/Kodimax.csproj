@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BranchOffice.cs" />
+    <Compile Include="BranchOfficeControl.cs" />
     <Compile Include="Candy.cs" />
     <Compile Include="CandyControl.cs" />
     <Compile Include="Cinema.cs" />
