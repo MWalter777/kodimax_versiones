@@ -42,6 +42,10 @@ namespace Kodimax
             items.Add("GREGAR GOLOSINA");
             items.Add("ELIMINAR EMPLEADO");
             items.Add("GREGAR EMPLEADO");
+            items.Add("AGREGAR SUCURSALES");
+            items.Add("MODIFICAR SUCURSALES");
+            items.Add("AGREGAR PRECIO DE AUTOCINE");
+            items.Add("MODIFICAR PRECIO DE AUTOCINE");
             items.Add("GENERAR REPORTES");
             items.Add("CERRAR SESION");
             Menu menu = new Menu(items, 15, 7);
@@ -77,10 +81,22 @@ namespace Kodimax
                         addEmployee();
                         break;
                     case 8:
+                        addBranchOffice();
+                        break;
+                    case 9:
+                        editBranchOffice();
+                        break;
+                    case 10:
+                        addParking();
+                        break;
+                    case 11:
+                        editParking();
+                        break;
+                    case 12:
                         printReport();
                         break;
                 }
-            } while (option < 9);
+            } while (option < 13);
         }
 
         private static void printReport()
@@ -191,7 +207,8 @@ namespace Kodimax
             items.Add("GREGAR GOLOSINA");
             items.Add("AGREGAR SUCURSALES");
             items.Add("MODIFICAR SUCURSALES");
-            items.Add("MODIFICAR PRECIOS AUTOCINE");
+            items.Add("AGREGAR PRECIO DE AUTOCINE");
+            items.Add("MODIFICAR PRECIO DE AUTOCINE");
             items.Add("CERRAR SESION");
             Menu menu = new Menu(items, 15, 7);
             int option;
@@ -226,11 +243,65 @@ namespace Kodimax
                         editBranchOffice();
                         break;
                     case 8:
-                        addCandy();
+                        addParking();
+                        break;
+                    case 9:
+                        editParking();
                         break;
                 }
-            } while (option < 9);
+            } while (option < 10);
 
+        }
+
+        private static void addParking()
+        {
+            int index = showBranch("SELECCIONE LA SUCURSAL");
+            if (index >= 0 && index < Program.cinema.branchs.Count)
+            {
+                ParkingControl parking = new ParkingControl(index);
+                if (parking.edit())
+                {
+                    Console.Clear();
+                    Console.WriteLine("PARQUEO AGREGADO CON EXITO");
+                    Console.ReadKey();
+                }
+            }
+        }
+
+        private static void editParking()
+        {
+            int index = showBranch("SELECCIONE LA SUCURSAL");
+            if (index >= 0 && index < Program.cinema.branchs.Count)
+            {
+                int indexParking = showParking(index);
+                BranchOffice br = Program.cinema.branchs.ToArray()[index];
+                if(indexParking>=0 && indexParking < br.parking.Count)
+                {
+                    ParkingControl parking = new ParkingControl(index, indexParking);
+                    if (parking.edit())
+                    {
+                        Console.Clear();
+                        Console.WriteLine("PARQUEO AGREGADO CON EXITO");
+                        Console.ReadKey();
+                    }
+                }
+            }
+        }
+
+        private static int showParking(int index)
+        {
+            BranchOffice br = Program.cinema.branchs.ToArray()[index];
+            Console.Clear();
+            ArrayList items = new ArrayList();
+            foreach (Parking p in br.parking)
+            {
+                items.Add(String.Format("{0}\t{1}\t{2}", p.name, p.price, p.capacity));
+            }
+            items.Add("REGRESAR");
+            Menu menu = new Menu(items, 15, 7, "Seleccione el parqueo");
+            menu.printItems();
+            int option = menu.getOption();
+            return option;
         }
 
         private static void addBranchOffice()
@@ -265,7 +336,7 @@ namespace Kodimax
             ArrayList items = new ArrayList();
             foreach (BranchOffice br in Program.cinema.branchs)
             {
-                items.Add(String.Format("{0}\t{1}\t${2}", br.name, br.price, br.capacity));
+                items.Add(String.Format("{0}", br.name));
             }
             items.Add("REGRESAR");
             Menu menu = new Menu(items, 15, 7, "Seleccione una opcion");

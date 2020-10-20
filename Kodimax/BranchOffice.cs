@@ -9,22 +9,30 @@ namespace Kodimax
     class BranchOffice
     {
         private string _name;
-        private double _price;
-        private int _capacity;
+        private List<Parking> _parking;
 
 
         public BranchOffice()
         {
-            _capacity = 50;
+            _parking = new List<Parking>();
         }
 
-        public BranchOffice(string name, double price, int capacity)
+        public BranchOffice(string name) : this()
         {
             _name = name;
-            _price = price;
-            _capacity = capacity;
         }
 
+        public List<Parking> parking
+        {
+            set
+            {
+                _parking = value;
+            }
+            get
+            {
+                return _parking;
+            }
+        }
 
         public string name
         {
@@ -35,30 +43,6 @@ namespace Kodimax
             get
             {
                 return _name;
-            }
-        }
-
-        public double price
-        {
-            set
-            {
-                _price = value;
-            }
-            get
-            {
-                return _price;
-            }
-        }
-
-        public int capacity
-        {
-            set
-            {
-                _capacity = value;
-            }
-            get
-            {
-                return _capacity;
             }
         }
 

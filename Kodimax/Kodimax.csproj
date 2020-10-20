@@ -54,6 +54,8 @@
     <Compile Include="Cinema.cs" />
     <Compile Include="MovieControl.cs" />
     <Compile Include="OptionSeat.cs" />
+    <Compile Include="Parking.cs" />
+    <Compile Include="ParkingControl.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="LoginControl.cs" />
     <Compile Include="Menu.cs" />
