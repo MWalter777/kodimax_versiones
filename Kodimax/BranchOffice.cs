@@ -10,12 +10,12 @@ namespace Kodimax
     {
         private string _name;
         private List<Parking> _parking;
-        private List<Ticket> _tikets;
+        private List<Bill> _bills;
 
         public BranchOffice()
         {
             _parking = new List<Parking>();
-            _tikets = new List<Ticket>();
+            _bills = new List<Bill>();
         }
 
         public BranchOffice(string name) : this()
@@ -35,15 +35,15 @@ namespace Kodimax
             }
         }
 
-        public List<Ticket> tikets
+        public List<Bill> bills
         {
             set
             {
-                _tikets = value;
+                _bills = value;
             }
             get
             {
-                return _tikets;
+                return _bills;
             }
         }
 

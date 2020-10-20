@@ -444,6 +444,7 @@ namespace Kodimax
             items.Add("VER GOLOSINAS");
             items.Add("COMPRAR BOLETO");
             items.Add("COMPRAR GOLOSINA");
+            items.Add("VER SUCURSALES");
             items.Add("CERRAR SESION");
             Menu menu = new Menu(items, 15, 7);
             menu.printItems();
@@ -467,16 +468,20 @@ namespace Kodimax
                     case 3:
                         getCandy();
                         break;
+                    case 4:
+                        showBranch("");
+                        break;
                 }
-            } while (option < 4);
+            } while (option < 5);
 
 
         }
 
         private static void getCandy()
         {
+            int branch = showBranch("SELECCIONE LA SUCURSAL");
             int index = showCandies("SELECCIONE LA GOLOSINA A COMPRAR");
-            if (index >= 0 && index < Program.cinema.candies.Count)
+            if (index >= 0 && index < Program.cinema.candies.Count && branch>=0 && branch<Program.cinema.branchs.Count)
             {
                 ArrayList items2 = new ArrayList();
                 Candy candy = Program.cinema.candies.ToArray()[index];
@@ -484,8 +489,11 @@ namespace Kodimax
                 items2.Add("Precion: $" + candy.price);
 
                 VentaControl venta = new VentaControl(index, items2, 20);
-                if (venta.newVenta())
+                Bill bill = venta.newVenta();
+                if (bill != null)
                 {
+                    BranchOffice br = Program.cinema.branchs.ToArray()[branch];
+                    br.bills.Add(bill);
                     Console.Clear();
                     Console.WriteLine("GOLOSINA COMPRADA CON EXITO");
                     Console.ReadKey();
@@ -495,8 +503,9 @@ namespace Kodimax
 
         private static void getMovie()
         {
+            int branch = showBranch("SELECCIONE LA SUCURSAL");
             int index = showMovies("SELECCIONE LA PELICULA QUE DESEA");
-            if(index>=0 && index < Program.cinema.movies.Count)
+            if(index>=0 && index < Program.cinema.movies.Count && branch >= 0 && branch < Program.cinema.branchs.Count)
             {
                 Console.Clear();
                 ArrayList items = new ArrayList();
@@ -517,8 +526,11 @@ namespace Kodimax
                     items2.Add("Sala: " + room.type);
                     items2.Add("Precio por boleto: $" + room.price);
                     VentaControl venta = new VentaControl(index, option, room.free, items2);
-                    if (venta.newVenta())
+                    Bill bill = venta.newVenta();
+                    if (bill != null)
                     {
+                        BranchOffice br = Program.cinema.branchs.ToArray()[branch];
+                        br.bills.Add(bill);
                         Console.Clear();
                         Seat seat = new Seat(room.rows, room.columns, room.matriz);
                         List<OptionSeat> value = seat.getIndex(venta.quantity, movie.name);

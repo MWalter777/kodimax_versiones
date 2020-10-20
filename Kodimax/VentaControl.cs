@@ -128,9 +128,9 @@ namespace Kodimax
             return quantity >0? pay >= getPrice():false;
         }
 
-        public bool newVenta()
+        public Bill newVenta()
         {
-            bool isRegister = false;
+            Bill bill = null;
             Console.Clear();
             showMenu();
             while ((isInvalid() || option != OPTIONS - 1) && option != OPTIONS)
@@ -168,6 +168,7 @@ namespace Kodimax
                         Console.Write(pay == getPaid ? "COBRO EXACTO, GRACIAS POR COMPRAR EN KODIMAX" : String.Format("SU CAMBIO ES: $ {0} GRACIAS POR COMPRAR EN KODIMAX", pay - getPaid));
                         Console.SetCursorPosition(x, 13);
                         Console.Write("POR FAVOR SELECCIONE SUS ASIENTOS");
+                        bill = new Bill("Compra de boletos para "+ticket.movie.name, quantity, getPaid);
                     }
                     if (indexCandy >=0 && indexMovie < 0 && indexRoom < 0)
                     {
@@ -183,16 +184,15 @@ namespace Kodimax
                         Console.Write("Precio: {0}", getPrice());
                         Console.SetCursorPosition(x, 6);
                         Console.Write(pay == getPrice() ? "COBRO EXACTO, GRACIAS POR COMPRAR EN KODIMAX" : String.Format("SU CAMBIO ES: $ {0} GRACIAS POR COMPRAR EN KODIMAX", pay - getPrice()));
+                        bill = new Bill("Compra de dulces: "+candy.name, quantity, getPrice());
                     }
                     Console.SetCursorPosition(x, 14);
                     Console.Write("Empleado: "+getEmpleado());
                     Console.ReadKey();
-
-                    isRegister = true;
                 }
                 catch (Exception e) { }
             }
-            return isRegister;
+            return bill;
         }
 
         private string getEmpleado()
