@@ -87,6 +87,19 @@ namespace Kodimax
             cinema.candies.Add(new Candy(3, "Pepsi", "Bebida", 6.25));
             cinema.candies.Add(new Candy(4, "Nachos", "Comida", 7.25));
 
+            BranchOffice b1 = new BranchOffice("SUCURSAL 1");
+            b1.parking.Add(new Parking("PREMIUM", 15, 50));
+            b1.parking.Add(new Parking("NORMAL", 10, 100));
+            b1.parking.Add(new Parking("BARATO", 5, 150));
+            b1.parking.Add(new Parking("CASI GRATIS", 1, 250));
+            cinema.branchs.Add(b1);
+            BranchOffice b2 = new BranchOffice("SUCURSAL 2");
+            b2.parking.Add(new Parking("PREMIUM", 25, 50));
+            b2.parking.Add(new Parking("NORMAL", 20, 100));
+            b2.parking.Add(new Parking("BARATO", 15, 150));
+            b2.parking.Add(new Parking("CASI GRATIS", 10, 250));
+            cinema.branchs.Add(b2);
+
         }
     }
 }

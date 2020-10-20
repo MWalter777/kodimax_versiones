@@ -21,6 +21,9 @@ namespace Kodimax
         public double pay = 0;
         private List<User> employees = new List<User>();
         public ArrayList items;
+        private bool _parking;
+        private int _branch;
+        private int indexParking;
 
         public VentaControl()
         {
@@ -40,12 +43,15 @@ namespace Kodimax
             this.free = free;
         }
 
-        public VentaControl(int indexMovie, int indexRoom, int free, ArrayList items) : this()
+        public VentaControl(int indexMovie, int indexRoom, int free, ArrayList items, bool parking, int branch, int indexParking) : this()
         {
             this.indexMovie = indexMovie;
             this.indexRoom = indexRoom;
             this.free = free;
             this.items = items;
+            _parking = parking;
+            _branch = branch;
+            this.indexParking = indexParking;
         }
 
         public void showMenu()
@@ -109,18 +115,24 @@ namespace Kodimax
 
         private double getPrice()
         {
+            double price = 0;
             if(indexCandy < 0 && indexRoom>=0 && indexMovie >= 0)
             {
                 Movie movie = Program.cinema.movies.ToArray()[indexMovie];
+                if (_parking)
+                {
+                    Parking p = Program.cinema.branchs.ToArray()[_branch].parking.ToArray()[indexParking];
+                    price = p.price;
+                }
                 Room room = movie.rooms.ToArray()[indexRoom];
-                return room.price * quantity;
+                price += room.price*quantity;
             }
             else if (indexCandy>=0)
             {
                 Candy candy = Program.cinema.candies.ToArray()[indexCandy];
-                return candy.price * quantity;
+                price = candy.price * quantity;
             }
-            return 0;
+            return price;
         }
 
         private bool isPayAcceptable()
@@ -158,17 +170,16 @@ namespace Kodimax
                         Console.SetCursorPosition(x, 6);
                         Console.Write("Duracion: {0}", ticket.movie.duration);
                         Console.SetCursorPosition(x, 8);
-                        double getPaid = quantity * ticket.room.price;
                         Console.Write("Cliente: {0}", ticket.user.name);
                         Console.SetCursorPosition(x, 9);
                         Console.Write("Boletos: {0}", quantity);
                         Console.SetCursorPosition(x, 10);
-                        Console.Write("Precio a pagar: {0}", getPaid);
+                        Console.Write("Precio a pagar: {0}", getPrice());
                         Console.SetCursorPosition(x, 12);
-                        Console.Write(pay == getPaid ? "COBRO EXACTO, GRACIAS POR COMPRAR EN KODIMAX" : String.Format("SU CAMBIO ES: $ {0} GRACIAS POR COMPRAR EN KODIMAX", pay - getPaid));
+                        Console.Write(pay == getPrice() ? "COBRO EXACTO, GRACIAS POR COMPRAR EN KODIMAX" : String.Format("SU CAMBIO ES: $ {0} GRACIAS POR COMPRAR EN KODIMAX", pay - getPrice()));
                         Console.SetCursorPosition(x, 13);
                         Console.Write("POR FAVOR SELECCIONE SUS ASIENTOS");
-                        bill = new Bill("Compra de boletos para "+ticket.movie.name, quantity, getPaid);
+                        bill = new Bill("Compra de boletos para "+ticket.movie.name, quantity, getPrice());
                     }
                     if (indexCandy >=0 && indexMovie < 0 && indexRoom < 0)
                     {

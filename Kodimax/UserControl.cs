@@ -507,15 +507,42 @@ namespace Kodimax
             int index = showMovies("SELECCIONE LA PELICULA QUE DESEA");
             if(index>=0 && index < Program.cinema.movies.Count && branch >= 0 && branch < Program.cinema.branchs.Count)
             {
+                int indexParking = -1;
                 Console.Clear();
                 ArrayList items = new ArrayList();
+                items.Add("AUTOCINE");
+                items.Add("NORMAL");
+                items.Add("SALIR");
+                Menu menu = new Menu(items, 15, 7, "SELECCIONE UNA OPCION");
+                menu.printItems();
+                int needParking = menu.getOption();
+
+                if(needParking == 0)
+                {
+                    Console.Clear();
+                    items = new ArrayList();
+                    BranchOffice b = Program.cinema.branchs.ToArray()[branch];
+                    foreach (Parking p in b.parking)
+                    {
+                        items.Add(String.Format("Tipo: {0}, precio: ${1}, capacidad: {2} ", p.name, p.price, p.capacity));
+                    }
+                    items.Add("SALIR");
+                    menu = new Menu(items, 15, 7, "SELECCIONE El PARQUEO QUE DESEA");
+                    menu.printItems();
+                    indexParking = menu.getOption();
+                }
+
+
+
+                Console.Clear();
+                items = new ArrayList();
                 Movie movie = Program.cinema.movies.ToArray()[index];
                 foreach(Room r in movie.rooms)
                 {
                     items.Add(String.Format("Tipo: {0}, precio: ${1}, disponible: {2} ", r.type, r.price, r.free));
                 }
                 items.Add("SALIR");
-                Menu menu = new Menu(items, 15, 7, "SELECCIONE LA SALA QUE DESEA");
+                menu = new Menu(items, 15, 7, "SELECCIONE LA SALA QUE DESEA");
                 menu.printItems();
                 int option = menu.getOption();
                 if(option>=0 && option < items.Count - 1)
@@ -525,7 +552,7 @@ namespace Kodimax
                     items2.Add("Pelicula: " + movie.name);
                     items2.Add("Sala: " + room.type);
                     items2.Add("Precio por boleto: $" + room.price);
-                    VentaControl venta = new VentaControl(index, option, room.free, items2);
+                    VentaControl venta = new VentaControl(index, option, room.free, items2, needParking==0?true:false, branch, indexParking);
                     Bill bill = venta.newVenta();
                     if (bill != null)
                     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace Kodimax
             _name = name;
         }
 
+        [JsonIgnore]
         public List<Parking> parking
         {
             set
