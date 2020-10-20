@@ -105,6 +105,7 @@ namespace Kodimax
             items.Add("REPORTE DE USUARIOS  (U)");
             items.Add("REPORTE DE PELICULAS (C)");
             items.Add("REPORTE DE GOLOSINAS (G)");
+            items.Add("REPORTE DE VENTAS    (V)");
             items.Add("REGRESAR");
             Menu menu = new Menu(items, 15, 7);
             menu.printItems();
@@ -125,8 +126,20 @@ namespace Kodimax
                     case 2:
                         printCandyJSON();
                         break;
+                    case 3:
+                        printSales();
+                        break;
                 }
-            } while (option < 3);
+            } while (option < 4);
+        }
+
+        private static void printSales()
+        {
+            Console.Clear();
+            string result = JsonConvert.SerializeObject(Program.cinema.branchs);
+            Console.WriteLine(result);
+            printJSON(result, "ventas.json");
+            Console.ReadKey();
         }
 
         private static void printCandyJSON()
